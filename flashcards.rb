@@ -16,4 +16,4 @@ create_table_command = <<-SQL
 	)
 SQL
 
-db.excecute(create_table_command)
+db.execute(create_table_command)

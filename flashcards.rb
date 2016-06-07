@@ -38,21 +38,21 @@ db.execute(create_table_command)
 def add_card (database)
 	add_loop = false
 	until add_loop
-		puts "What is the syntax and applicable class of the method? Example: .each (Array)"
+		puts "\nWhat is the syntax and applicable class of the method? Example: .each (Array)"
 		syntax = gets.chomp 
 		# CHECK FOR DUPLICATE
 		# if duplicate_checker(syntax) returns true puts "already a card"
 		# else returns false and continues
-		puts "What does the method do?"
+		puts "\nWhat does the method do?"
 		does = gets.chomp
-		puts "Can this method take and argument or block? If so, explain."
+		puts "\nCan this method take and argument or block? If so, explain."
 		takes = gets.chomp
-		puts "What is the direct output of this method?"
+		puts "\nWhat is the direct output of this method?"
 		outs = gets.chomp
-		puts "After the method has executed, does it permanently alter the original object?"
+		puts "\nAfter the method has executed, does it permanently alter the original object?"
 		perm = gets.chomp
 		database.execute("INSERT INTO ruby_methods (name, function, takesarg, output, permanent) VALUES (?, ?, ?, ?, ?)", [syntax, does, takes, outs, perm])
-		puts "Do you want to add another card?"
+		puts "\nDo you want to add another card?"
 		continue = to_boolean(gets.chomp)
 			if continue == false
 				add_loop = true
@@ -67,12 +67,17 @@ def card_quiz (database)
 	quiz_loop = false
 	until quiz_loop
 		current_card = cards.sample
-		p current_card[name]
-		puts "What does this method do? Take a guess to flip the card."
+		puts "\n#{current_card["name"]}"
+		puts "\nWhat does this method do? Take a guess to flip the card."
 		gets.chomp
-		puts "Function: #{current_card["function"]}\nTakes argument or block: #{current_card["takesarg"]}\nOutput: #{current_card["output"]}\nAlters original: #{current_card["permanent"]}"
-		# Does this card need updating?""
-		puts "\nOne more?"
+		puts "\nFunction: #{current_card["function"]}\nTakes argument or block: #{current_card["takesarg"]}\nOutput: #{current_card["output"]}\nAlters original: #{current_card["permanent"]}"
+		# puts "\nDoes this card need updating?"
+		# update = to_boolean(gets.chomp)
+		# 	if update
+		# 		update_card(db, current_card["id"])
+		# 	else
+		# 	end
+		puts "\nOne more card?"
 		done = to_boolean(gets.chomp)
 			if done == false
 				quiz_loop = true
@@ -82,19 +87,8 @@ def card_quiz (database)
 end
 
 # Method that updates a card
-def update_card (database)
-	# puts "What card would you like to alter?"
-	# change = gets.chomp
-	# duplicate_checker(change)
-		# if duplicate checker returns true
-			# puts "What column value would you like to update?"
-			# database.execute("UPDATE ruby_methods SET ? WHERE ?" [new_value, existing_key])
-		# else returns false
-			# puts "that card doesn't exist"
-	# puts "value has been updated"
-
-	#### OR #####
-	# this method only runs inside the quiz with the card already selected
+def update_card (database, i)
+	database.execute("UPDATE ruby_methods SET ? = ? WHERE id = ?" [key, new_value, i])
 end
 
 # Method that checks if the card is duplicate
@@ -114,6 +108,7 @@ def to_boolean(input)
 	end
 end
 
+
 ####### BEGIN UI #######
 
 puts "\nWelcome to the Ruby Method Flashcard Quizzer Thinger!\n"
@@ -127,18 +122,10 @@ until choice_loop
 	when 2 
 		card_quiz(db)
 	when 3
-		puts "\nThank you for using the Ruby Method Flashcard Quizzer Thinger!\n"
+		puts "\nThank you for using the Ruby Method Flashcard Quizzer Thinger!"
 		choice_loop = true
 	else
-		puts "I'm sorry, I didn't understand."
+		puts "\nI'm sorry, I didn't understand."
 	end
 end
-
-
-
-# explore ORM by retrieving data
-# cards = db.execute("SELECT * FROM ruby_methods")
-# cards.each do |card|
-#  puts "Method: #{card['name']}, Function: #{card['function']}, Takes argument or block: #{card[takesarg]}, Output: #{card[output]}, Alters original: #{card[permanent]}"
-# end
 

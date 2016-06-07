@@ -45,11 +45,11 @@ def add_card (database)
 		# else returns false and continues
 		puts "What does the method do?"
 		does = gets.chomp
-		puts "Can this method take and argument or block?"
+		puts "Can this method take and argument or block? If so, explain."
 		takes = gets.chomp
-		puts "What does this method put out in the end?"
+		puts "What is the direct output of this method?"
 		outs = gets.chomp
-		puts "Does this method permanently alter the original object?"
+		puts "After the method has executed, does it permanently alter the original object?"
 		perm = gets.chomp
 		database.execute("INSERT INTO ruby_methods (name, function, takesarg, output, permanent) VALUES (?, ?, ?, ?, ?)", [syntax, does, takes, outs, perm])
 		puts "Do you want to add another card?"
@@ -61,7 +61,27 @@ def add_card (database)
 	end
 end
 
-# Method to update card
+# Method that quizzes the user
+def card_quiz (database)
+	cards = database.execute("SELECT * FROM ruby_methods")
+	quiz_loop = false
+	until quiz_loop
+		current_card = cards.sample
+		p current_card[name]
+		puts "What does this method do? Take a guess to flip the card."
+		gets.chomp
+		puts "Function: #{current_card["function"]}\nTakes argument or block: #{current_card["takesarg"]}\nOutput: #{current_card["output"]}\nAlters original: #{current_card["permanent"]}"
+		# Does this card need updating?""
+		puts "\nOne more?"
+		done = to_boolean(gets.chomp)
+			if done == false
+				quiz_loop = true
+			else
+			end
+	end
+end
+
+# Method that updates a card
 def update_card (database)
 	# puts "What card would you like to alter?"
 	# change = gets.chomp
@@ -77,17 +97,12 @@ def update_card (database)
 	# this method only runs inside the quiz with the card already selected
 end
 
-# Check if duplicate card method
+# Method that checks if the card is duplicate
 def duplicate_checker (database, key)
 
 end
 
-# Quiz method
-def card_quiz
-
-end
-
-# Convert to boolean method
+# Method that converts input to boolean value
 def to_boolean(input)
 	case input[0].downcase
 	when "y"
@@ -101,20 +116,18 @@ end
 
 ####### BEGIN UI #######
 
-puts "\nWelcome to the Ruby Method Flashcard Quizzer!\n"
+puts "\nWelcome to the Ruby Method Flashcard Quizzer Thinger!\n"
 choice_loop = false
 until choice_loop
-	puts "\nWould you like to\n1) Add new flashcards\n2) Alter existing flashcards\n3) Quiz yourself\n4) Exit the program"
+	puts "\nWould you like to\n1) Add new flashcards\n2) Quiz yourself\n3) Exit the program"
 	choice = gets.chomp.to_i
 	case choice 
 	when 1
 		add_card(db)
-	when 2
-		# update_card(db)
-	when 3 
-		# card_quiz(db)
-	when 4
-		puts "\nThank you for using the Ruby Method Flashcard Quizzer!\n"
+	when 2 
+		card_quiz(db)
+	when 3
+		puts "\nThank you for using the Ruby Method Flashcard Quizzer Thinger!\n"
 		choice_loop = true
 	else
 		puts "I'm sorry, I didn't understand."

@@ -8,12 +8,11 @@
 # 	Quiz/random select method
 
 # Table should include: 
-# 1) the name/syntax of the method 
+# 1) the name/syntax of the method and what classes you can call the method on (keep it basic: strings, integers, floats, arrays, hashes)
 # 2) a description of what the method does 
-# 3) what classes you can call the method on (keep it basic: strings, integers, floats, arrays, hashes)
-# 4) if the method can take a block or argument 
-# 5) what the methods outputs
-# 6) if the method permanently alters the original object
+# 3) if the method can take a block or argument 
+# 4) what the methods outputs
+# 5) if the method permanently alters the original object
 
 require 'sqlite3'
 
@@ -35,14 +34,47 @@ db.execute(create_table_command)
 
 ####### BEGIN METHOD BLOCK #######
 
-# Add card method
-def add_card (database, syntax, purpose, takes_arg, outputs, perm)
-	database.execute("INSERT INTO ruby_methods (name, function, takesarg, output, permanent) VALUES (?, ?, ?, ?, ?)", [syntax, purpose, takes_arg, outputs, perm])
+# Method that adds new card info into the database
+def add_card (database)
+	add_loop = false
+	until add_loop
+		puts "What is the syntax and applicable class of the method? Example: .each (Array)"
+		syntax = gets.chomp 
+		# CHECK FOR DUPLICATE
+		# if duplicate_checker(syntax) returns true puts "already a card"
+		# else returns false and continues
+		puts "What does the method do?"
+		does = gets.chomp
+		puts "Can this method take and argument or block?"
+		takes = gets.chomp
+		puts "What does this method put out in the end?"
+		outs = gets.chomp
+		puts "Does this method permanently alter the original object?"
+		perm = gets.chomp
+		database.execute("INSERT INTO ruby_methods (name, function, takesarg, output, permanent) VALUES (?, ?, ?, ?, ?)", [syntax, does, takes, outs, perm])
+		puts "Do you want to add another card?"
+		continue = to_boolean(gets.chomp)
+			if continue == false
+				add_loop = true
+			else
+			end
+	end
 end
 
-# Alter card method
-def change_card (database, existing_key, new_value)
-	database.execute("UPDATE ruby_methods SET ? WHERE ?" [new_value, existing_key])
+# Method to update card
+def update_card (database)
+	# puts "What card would you like to alter?"
+	# change = gets.chomp
+	# duplicate_checker(change)
+		# if duplicate checker returns true
+			# puts "What column value would you like to update?"
+			# database.execute("UPDATE ruby_methods SET ? WHERE ?" [new_value, existing_key])
+		# else returns false
+			# puts "that card doesn't exist"
+	# puts "value has been updated"
+
+	#### OR #####
+	# this method only runs inside the quiz with the card already selected
 end
 
 # Check if duplicate card method
@@ -75,35 +107,14 @@ until choice_loop
 	puts "\nWould you like to\n1) Add new flashcards\n2) Alter existing flashcards\n3) Quiz yourself\n4) Exit the program"
 	choice = gets.chomp.to_i
 	case choice 
-	when 1 # Add card program
-		new_loop = false
-		until new_loop
-			puts "What is the syntax and applicable class of the method? Example: .each (String)"
-			method_syntax = gets.chomp # CHECK FOR DUPLICATE
-			# if duplicate_checker(method_syntax) returns true puts "already a card"
-			# else returns false and continues
-			puts "What does the method do?"
-			method_function = gets.chomp
-			puts "Does this method take and argument or block?"
-			takes_a_or_b = gets.chomp
-			puts "What does this method put out in the end?"
-			puts_out = gets.chomp
-			puts "Does this method permanently alter the original object?"
-			perm_alter = gets.chomp
-			add_card(db, method_syntax, method_function, takes_a_or_b, puts_out, perm_alter)
-			puts "Do you want to add another card?"
-			continue = to_boolean(gets.chomp)
-			if continue == false
-				new_loop = true
-			else
-			end
-		end
-	when 2 # Alter card program
-		puts "ok"
-	when 3 # Quiz program
-		puts "nice"
-	when 4 # End program
-		puts "\nThank you for using the Ruby Method Flashcard Quizzer!"
+	when 1
+		add_card(db)
+	when 2
+		# update_card(db)
+	when 3 
+		# card_quiz(db)
+	when 4
+		puts "\nThank you for using the Ruby Method Flashcard Quizzer!\n"
 		choice_loop = true
 	else
 		puts "I'm sorry, I didn't understand."
@@ -113,8 +124,8 @@ end
 
 
 # explore ORM by retrieving data
-# cards = db.execute("SELECT * FROM cards")
+# cards = db.execute("SELECT * FROM ruby_methods")
 # cards.each do |card|
-#  puts "#{card['name']} does #{card['function']}"
+#  puts "Method: #{card['name']}, Function: #{card['function']}, Takes argument or block: #{card[takesarg]}, Output: #{card[output]}, Alters original: #{card[permanent]}"
 # end
 

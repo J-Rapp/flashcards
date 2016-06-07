@@ -36,7 +36,7 @@ db.execute(create_table_command)
 ####### BEGIN METHOD BLOCK #######
 
 # Add card method
-def add_card (database, syntax, purpose, class_use, takes_arg, outputs, perm)
+def add_card (database, syntax, purpose, takes_arg, outputs, perm)
 	database.execute("INSERT INTO ruby_methods (name, function, takesarg, output, permanent) VALUES (?, ?, ?, ?, ?)", [syntax, purpose, takes_arg, outputs, perm])
 end
 
@@ -79,17 +79,18 @@ until choice_loop
 		new_loop = false
 		until new_loop
 			puts "What is the syntax and applicable class of the method? Example: .each (String)"
-			method_syntax = gets.chomp
+			method_syntax = gets.chomp # CHECK FOR DUPLICATE
+			# if duplicate_checker(method_syntax) returns true puts "already a card"
+			# else returns false and continues
 			puts "What does the method do?"
 			method_function = gets.chomp
 			puts "Does this method take and argument or block?"
-			takes_a_or_b = to_boolean(gets.chomp)
+			takes_a_or_b = gets.chomp
 			puts "What does this method put out in the end?"
 			puts_out = gets.chomp
 			puts "Does this method permanently alter the original object?"
-			perm_alter = to_boolean(gets.chomp)
-			p method_syntax, method_function, takes_a_or_b, puts_out, perm_alter
-			# add_card(db, method_syntax, method_function, takes_a_or_b, puts_out, perm_alter)
+			perm_alter = gets.chomp
+			add_card(db, method_syntax, method_function, takes_a_or_b, puts_out, perm_alter)
 			puts "Do you want to add another card?"
 			continue = to_boolean(gets.chomp)
 			if continue == false

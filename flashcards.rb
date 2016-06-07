@@ -77,12 +77,18 @@ def card_quiz (database)
 		 		update_card(database, current_card["id"])
 		 	else
 		 	end
-		puts "\nOne more card?"
-		done = to_boolean(gets.chomp)
-			if done == false
-				quiz_loop = true
-			else
-			end
+		cards.delete(current_card)
+		if cards.length == 0
+			puts "\nThat's every card!"
+			quiz_loop = true
+		else
+			puts "\nOne more card?"
+			done = to_boolean(gets.chomp)
+				if done == false
+					quiz_loop = true
+				else
+				end
+		end
 	end
 end
 

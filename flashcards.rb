@@ -39,10 +39,12 @@ def add_card (database)
 	add_loop = false
 	until add_loop
 		puts "\nWhat is the syntax and applicable class of the method? Example: .each (Array)"
-		syntax = gets.chomp 
-		# CHECK FOR DUPLICATE
-		# if duplicate_checker(db, syntax) returns true puts "already a card"
-		# else returns false and continues
+		syntax = gets.chomp
+			if duplicate_checker(database, syntax)
+				puts "Already a card"
+				break
+			else
+			end
 		puts "\nWhat does the method do?"
 		does = gets.chomp
 		puts "\nCan this method take and argument or block? If so, explain."
@@ -129,7 +131,12 @@ end
 
 # Method that checks if the card is duplicate
 def duplicate_checker (database, method)
-
+	cards = database.execute("SELECT name FROM ruby_methods") # <cards> is an array of hashes
+	true_false = []
+	cards.each do |hash|
+		true_false << hash.has_value?(method)
+	end
+	return true_false.include?(true)
 end
 
 # Method that converts input to boolean value

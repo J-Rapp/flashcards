@@ -63,20 +63,20 @@ end
 
 # Method that quizzes the user
 def card_quiz (database)
-	cards = database.execute("SELECT * FROM ruby_methods")
+	cards = database.execute("SELECT * FROM ruby_methods") # cards is an array
 	quiz_loop = false
 	until quiz_loop
-		current_card = cards.sample
-		puts "\n#{current_card["name"]}"
+		current_card = cards.sample # takes a nested hash from the cards array
+		puts "\n--------------------\n#{current_card["name"]}\n--------------------"
 		puts "\nWhat does this method do? Take a guess to flip the card."
 		gets.chomp
 		puts "\nFunction: #{current_card["function"]}\nTakes argument or block: #{current_card["takesarg"]}\nOutput: #{current_card["output"]}\nAlters original: #{current_card["permanent"]}"
-		# puts "\nDoes this card need updating?"
-		# update = to_boolean(gets.chomp)
-		# 	if update
-		# 		update_card(db, current_card["id"])
-		# 	else
-		# 	end
+		puts "\nDoes this card need updating?"
+		update = to_boolean(gets.chomp)
+			if update
+		 		update_card(database, current_card["id"])
+		 	else
+		 	end
 		puts "\nOne more card?"
 		done = to_boolean(gets.chomp)
 			if done == false
@@ -88,7 +88,37 @@ end
 
 # Method that updates a card
 def update_card (database, i)
-	database.execute("UPDATE ruby_methods SET ? = ? WHERE id = ?" [key, new_value, i])
+	update_loop = false
+	until update_loop
+		puts "\nWould you like to update:\n1) The syntax and class\n2) The function of the method\n3) If the argument takes a block/argument or not\n4) The output of the method\n5) Whether or not it alters the original object\n6) No changes needed"
+		input = gets.chomp.to_i
+		case input
+		when 1
+			puts "What should the new answer be?"
+			update_syntax = gets.chomp
+			database.execute("UPDATE ruby_methods SET name = ? WHERE id = ?", [update_syntax, i])
+		when 2
+			puts "What should the new answer be?"
+			update_function = gets.chomp
+			database.execute("UPDATE ruby_methods SET function = ? WHERE id = ?", [update_function, i])
+		when 3
+			puts "What should the new answer be?"
+			update_arg = gets.chomp
+			database.execute("UPDATE ruby_methods SET takesarg = ? WHERE id = ?", [update_arg, i])
+		when 4
+			puts "What should the new answer be?"
+			update_output = gets.chomp
+			database.execute("UPDATE ruby_methods SET output = ? WHERE id = ?", [update_output, i])
+		when 5
+			puts "What should the new answer be?"
+			update_perm = gets.chomp
+			database.execute("UPDATE ruby_methods SET permanent = ? WHERE id = ?", [update_perm, i])
+		when 6
+			update_loop = true
+		else
+			puts "I'm sorry, I didn't understand"
+		end
+	end
 end
 
 # Method that checks if the card is duplicate

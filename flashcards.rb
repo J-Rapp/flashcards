@@ -41,7 +41,7 @@ def add_card (database)
 		puts "\nWhat is the syntax and applicable class of the method? Example: .each (Array)"
 		syntax = gets.chomp 
 		# CHECK FOR DUPLICATE
-		# if duplicate_checker(syntax) returns true puts "already a card"
+		# if duplicate_checker(db, syntax) returns true puts "already a card"
 		# else returns false and continues
 		puts "\nWhat does the method do?"
 		does = gets.chomp
@@ -63,26 +63,32 @@ end
 
 # Method that quizzes the user
 def card_quiz (database)
-	cards = database.execute("SELECT * FROM ruby_methods") # cards is an array
+	cards = database.execute("SELECT * FROM ruby_methods") # <cards> is an array
 	quiz_loop = false
 	until quiz_loop
-		current_card = cards.sample # takes a nested hash from the cards array
+		current_card = cards.sample # <current_card> is a hash nested in the <cards> array
 		puts "\n--------------------\n#{current_card["name"]}\n--------------------"
 		puts "\nWhat does this method do? Take a guess to flip the card."
 		gets.chomp
-		puts "\nFunction: #{current_card["function"]}\nTakes argument or block: #{current_card["takesarg"]}\nOutput: #{current_card["output"]}\nAlters original: #{current_card["permanent"]}"
+		puts "\n--------------------\nFunction: #{current_card["function"]}\nTakes argument or block: #{current_card["takesarg"]}\nOutput: #{current_card["output"]}\nAlters original: #{current_card["permanent"]}\n--------------------"
 		puts "\nDoes this card need updating?"
 		update = to_boolean(gets.chomp)
 			if update
 		 		update_card(database, current_card["id"])
 		 	else
 		 	end
-		puts "\nOne more card?"
-		done = to_boolean(gets.chomp)
-			if done == false
-				quiz_loop = true
-			else
-			end
+		cards.delete(current_card) # deletes the hash from the <cards> array
+		if cards.length == 0
+			puts "\nThat's every card!"
+			quiz_loop = true
+		else
+			puts "\nOne more card?"
+			done = to_boolean(gets.chomp)
+				if done == false
+					quiz_loop = true
+				else
+				end
+		end
 	end
 end
 
@@ -122,7 +128,7 @@ def update_card (database, i)
 end
 
 # Method that checks if the card is duplicate
-def duplicate_checker (database, key)
+def duplicate_checker (database, method)
 
 end
 

@@ -38,7 +38,7 @@ db.execute(create_table_command)
 def add_card (database)
 	add_loop = false
 	until add_loop
-		puts "\nWhat is the syntax and applicable class of the method? Example: .each (Array)"
+		puts "\nWhat is the syntax and applicable class of the method? Example syntax: .each (Array)"
 		syntax = gets.chomp
 			if duplicate_checker(database, syntax)
 				puts "Already a card"
@@ -157,13 +157,13 @@ end
 puts "\nWelcome to the Ruby Method Flashcard Quizzer Thinger!\n"
 choice_loop = false
 until choice_loop
-	puts "\nWould you like to\n1) Add new flashcards\n2) Quiz yourself\n3) Exit the program"
+	puts "\nWould you like to\n1) Quiz yourself\n2) Add new flashcards\n3) Exit the program"
 	choice = gets.chomp.to_i
 	case choice 
 	when 1
-		add_card(db)
-	when 2 
 		card_quiz(db)
+	when 2 
+		add_card(db)
 	when 3
 		puts "\nThank you for using the Ruby Method Flashcard Quizzer Thinger!"
 		choice_loop = true

@@ -59,17 +59,42 @@ end
 ####### BEGIN UI #######
 
 puts "\nWelcome to the Ruby Method Flashcard Quizzer!\n"
-puts "Would you like to 1) Add new flashcards, 2) Alter existing flashcards, or 3) Quiz yourself?"
-choice = gets.chomp.to_i
-	if choice == 1
+choice_loop = false
+until choice_loop
+	puts "\nWould you like to\n1) Add new flashcards\n2) Alter existing flashcards\n3) Quiz yourself\n4) Exit the program"
+	choice = gets.chomp.to_i
+	case choice 
+	when 1
 		puts "cool"
-	elsif choice == 2
+		# new_loop = false
+		# until new_loop
+		# 	puts "What is the syntax of the method? (example: .each)"
+		# 	method_syntax = gets.chomp
+		# 	puts "What does the method do?"
+		# 	method_function = gets.chomp
+		# 	puts "What classes can you call this method on?"
+		# 	what_classes = gets.chomp
+		# 	puts "Does this method take and argument or block?"
+		# 	takes_a_or_b = gets.chomp # NEEDS TO BE CONVERTED TO BOOLEAN
+		# 	puts "What does this method put out in the end?"
+		# 	puts_out = gets.chomp
+		# 	puts "Does this method permanently alter the original object?"
+		# 	perm_alter = gets.chomp # NEEDS TO BE CONVERTED TO BOOLEAN
+		# 	add_card(method_syntax, method_function, what_classes, takes_a_or_b, puts_out, perm_alter)
+		# 	puts "Do you want to add another card?"
+		# 	continue = gets.chomp
+		# end
+	when 2
 		puts "ok"
-	elsif choice == 3
+	when 3
 		puts "nice"
+	when 4
+		puts "\nThank you for using the Ruby Method Flashcard Quizzer!"
+		choice_loop = true
 	else
-		puts "I'm sorry, I didn't understand. Please select 1, 2, or 3."
+		puts "I'm sorry, I didn't understand."
 	end
+end
 
 
 
